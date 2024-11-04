@@ -22,12 +22,7 @@ module.exports = (sequelize, Sequelize, db) => {
         }
     },{
         timestamps: false,
-        underscored: true,
-        associate: function(models) {
-            // associations can be defined here
-          db.collection_recommendations.belongsTo(db.sequelize.model(db.recommendations));
-          db.collection_recommendations.belongsTo(db.sequelize.model(db.collections));
-        }
+        underscored: true
     }, {
         
     });
