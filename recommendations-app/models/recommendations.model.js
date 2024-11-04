@@ -27,29 +27,10 @@ module.exports = (sequelize, Sequelize, db) => {
         }
     },{
         timestamps: false,
-        underscored: true,
-        associate: function(models) {
-            // associations can be defined here
-            console.log(models);
-          db.collection_recommendations.hasOne(db.sequelize.model(db.recommendations));
-        }
+        underscored: true
     });
     db.users.hasMany(Recommendation);
     Recommendation.belongsTo(db.users);
 
     return Recommendation;
   };
-
-// module.exports = (sequelize, db) => {
-//     // @Table({ tableName: 'recommendations', createdAt: true })
-//     class Recommendation extends Model {
-        
-
-//         @Attribute(DataTypes.INTEGER)
-//         @NotNull
-//         @HasOne(() => db.users)
-//         user_id;
-//     }
-//     sequelize.models.push(Recommendation);
-//     return Recommendation;
-//   };
