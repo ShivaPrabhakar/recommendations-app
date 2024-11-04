@@ -3,9 +3,6 @@ const Users = db.users;
 const Op = db.Sequelize.Op;
 
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
-  
     Users.findAll({ })
       .then(data => {
         res.send(data);
