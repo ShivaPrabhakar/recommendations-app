@@ -29,31 +29,3 @@ module.exports = (sequelize, Sequelize, db) => {
     return User;
   };
 
-// module.exports = (sequelize, Sequelize) => {
-//     // @Table({ tableName: 'users', createdAt: true })
-//     class User extends Model {
-//         @Attribute(DataTypes.INTEGER)
-//         @PrimaryKey
-//         @AutoIncrement
-//         id;
-      
-//         @Attribute(DataTypes.STRING)
-//         @NotNull
-//         fname;
-      
-//         @Attribute(DataTypes.STRING)
-//         @NotNull
-//         sname;
-
-//         @Attribute(DataTypes.TEXT)
-//         profile_picture;
-
-//         @Attribute(DataTypes.TEXT)
-//         bio;
-
-//         @Attribute(DataTypes.DATE)
-//         created_at;
-//     }
-//     sequelize.models.push(User);
-//     return User;
-//   };
