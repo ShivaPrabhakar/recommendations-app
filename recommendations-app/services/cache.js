@@ -41,9 +41,9 @@ function Cache(redisClient, redisDbIndex){
     }
 }
 
-Cache.prototype.getCacheData = function(cacheKey){
+Cache.prototype.getCacheData = async function(cacheKey){
     console.log("getCacheData key " , cacheKey);
-    new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         this.redisClient.get(cacheKey, function(err, results){
             if(err){
                 console.error("getCacheData error", err);
@@ -62,11 +62,16 @@ Cache.prototype.getCacheData = function(cacheKey){
     });
 }
 
-Cache.prototype.setCacheData = function(cacheKey, results, expiry){
+Cache.prototype.setCacheData = async function(cacheKey, results, expiry){
     console.log("setCacheData", cacheKey, results, expiry);
-    new Promise((resolve, reject) => {
+    const data = results?.[0]?.collections?.dataValues;
+    return await new Promise((resolve, reject) => {
+        if(!data) {
+            resolve("No data to cache");
+            return;
+        }
         if(expiry){
-            this.redisClient.set(cacheKey, JSON.stringify(results[0].collections.dataValues), 'EX', expiry, (err, res) => {
+            this.redisClient.set(cacheKey, JSON.stringify(data), 'EX', expiry, (err, res) => {
                 if(err){
                     console.error("setCacheData error", err);
                     reject(err);
@@ -76,7 +81,7 @@ Cache.prototype.setCacheData = function(cacheKey, results, expiry){
                 }
             });
         } else {
-            this.redisClient.set(cacheKey, JSON.stringify(results[0].collections.dataValues), (err, res) => {
+            this.redisClient.set(cacheKey, JSON.stringify(data), (err, res) => {
                 if(err){
                     console.error("setCacheData error", err);
                     reject(err);
@@ -118,13 +123,13 @@ function getUserCacheKey(collectionId, userId) {
     return collectionCacheObjKey + ":" + userId + ":" + collectionId;
 }
 
-function setCacheData(collectionId, userId, results) {
+async function setCacheData(collectionId, userId, results) {
     const cacheKey = getUserCacheKey(collectionId, userId);
-    return cache.setCacheData(cacheKey, results);
+    return await cache.setCacheData(cacheKey, results);
 }
-function getCacheData(collectionId, userId) {
+async function getCacheData(collectionId, userId) {
     const cacheKey = getUserCacheKey(collectionId, userId);
-    return cache.getCacheData(cacheKey);
+    return await cache.getCacheData(cacheKey);
 }
 
 module.exports = {
