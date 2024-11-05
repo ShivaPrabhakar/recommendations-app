@@ -47,4 +47,11 @@ CREATE TABLE public.collection_recommendations ( id BIGSERIAL PRIMARY KEY, colle
 Please check the 
 recommendations-app/curl-requests.txt
 file the run the APIs
+
+## Assumptions
+
+1. Create Additional Tables: We’ll need to add a table to manage collections and a table to relate collections with recommendations.
+2. Hard deleting the data because there was no deleted in recommendations and users data in provided csv otherwise it is recommended to soft deleted the data.
+3. 
+
     
