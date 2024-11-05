@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize, db) => {
         }
     },{
         timestamps: false,
-        underscored: true
+        underscored: true,
     });
     db.users.hasMany(Recommendation);
     Recommendation.belongsTo(db.users);
