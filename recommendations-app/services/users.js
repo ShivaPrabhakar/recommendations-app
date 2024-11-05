@@ -2,6 +2,7 @@ const db = require("../models");
 const Users = db.users;
 const Op = db.Sequelize.Op;
 
+//for testing
 exports.findAll = (req, res) => {
     Users.findAll({ })
       .then(data => {
