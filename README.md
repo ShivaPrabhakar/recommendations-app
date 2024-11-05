@@ -40,4 +40,11 @@ CREATE TABLE public.collections ( id BIGSERIAL PRIMARY KEY, user_id BIGINT NOT N
 #### COLLECTION_RECOMMENDATIONS
 
 CREATE TABLE public.collection_recommendations ( id BIGSERIAL PRIMARY KEY, collection_id BIGINT NOT NULL, recommendation_id BIGINT NOT NULL, FOREIGN KEY (collection_id) REFERENCES public.collections(id) ON DELETE CASCADE, FOREIGN KEY (recommendation_id) REFERENCES public.recommendations(id) ON DELETE CASCADE );
+
+
+## API endpoint testing
+
+Please check the 
+recommendations-app/curl-requests.txt
+file the run the APIs
     
