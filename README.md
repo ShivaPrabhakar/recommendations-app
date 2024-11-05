@@ -52,6 +52,8 @@ file the run the APIs
 
 1. Create Additional Tables: We’ll need to add a table to manage collections and a table to relate collections with recommendations.
 2. Hard deleting the data because there was no deleted in recommendations and users data in provided csv otherwise it is recommended to soft deleted the data.
-3. 
+3. For Deleted and add the recommendation to collection we can make it async and respond with success but maintained sync call for data consistency.
+4. I have used cache but it can be used in a more efficient way to increase the performance.
+5. Since I had very less time considering the my office schedule and the urgency of the task it can be done in more performant and less error code, if you were looking for unit testcases that could have been done.
 
     
