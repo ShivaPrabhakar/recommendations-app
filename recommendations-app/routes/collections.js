@@ -29,7 +29,7 @@ module.exports = app => {
 
   router.post('/:collectionId/add', async (req, res) => {
     const { collectionId } = req.params;
-    const { recommendationId } = req.body;
+    const { recommendationId, userId } = req.body;
   
     try {
       if (!recommendationId) {
@@ -44,19 +44,43 @@ module.exports = app => {
         });
         return;
       }
+      if (!userId) {
+        res.status(400).send({
+          message: "User ID can not be empty!"
+        });
+        return;
+      }
 
-      const result = await collections.addRecommendation(parseInt(collectionId), parseInt(recommendationId));
-  
+      const result = await collections.addRecommendation(parseInt(collectionId), parseInt(recommendationId), parseInt(userId));
+      console.log(result);
       res.status(201).json(result);
     } catch (error) {
       res.status(500).json({ error: 'Failed to add recommendation to collection' });
     }
   });
 
-  router.delete('/:collectionId/remove/:recommendationId', async (req, res) => {
-    const { collectionId, recommendationId } = req.params;
+  router.delete('/:collectionId/:userId/remove/:recommendationId', async (req, res) => {
+    const { collectionId, recommendationId, userId } = req.params;
     try {
-      const result = await collections.removeRecommendation(parseInt(collectionId), parseInt(recommendationId));
+      if (!recommendationId) {
+        res.status(400).send({
+          message: "Recommendation ID can not be empty!"
+        });
+        return;
+      }
+      if (!collectionId) {
+        res.status(400).send({
+          message: "Collection ID can not be empty!"
+        });
+        return;
+      }
+      if (!userId) {
+        res.status(400).send({
+          message: "User ID can not be empty!"
+        });
+        return;
+      }
+      const result = await collections.removeRecommendation(parseInt(collectionId), parseInt(recommendationId), parseInt(userId));
       console.log(result);
       res.status(200).json({ message: 'Recommendation removed from collection' });
     } catch (error) {
@@ -66,11 +90,23 @@ module.exports = app => {
 
   router.get('/:collectionId/recommendations', async (req, res) => {
     const { collectionId } = req.params;
-    const { page = 1, limit = 10 } = req.query;
-    const offset = (page - 1) * limit;
+    const { page = 0, limit = 10, userId } = req.query;
+    const offset = parseInt(page) * parseInt(limit);
   
     try {
-      const recommendations = await collections.getRecommendations(parseInt(collectionId), offset, limit);
+      if (!collectionId) {
+        res.status(400).send({
+          message: "Collection ID can not be empty!"
+        });
+        return;
+      }
+      if (!userId) {
+        res.status(400).send({
+          message: "User ID can not be empty!"
+        });
+        return;
+      }
+      const recommendations = await collections.getRecommendations(parseInt(collectionId), parseInt(offset), parseInt(limit), parseInt(userId));
       console.log(recommendations);
       res.status(200).json(recommendations);
     } catch (error) {
@@ -79,17 +115,29 @@ module.exports = app => {
     }
   });
 
-  router.delete('/:collectionId', async (req, res) => {
-    const { collectionId } = req.params;
+  router.delete('/:collectionId/:userId', async (req, res) => {
+    const { collectionId, userId } = req.params;
     try {
-      const result = await collections.delete(parseInt(collectionId));
+      if (!collectionId) {
+        res.status(400).send({
+          message: "Collection ID can not be empty!"
+        });
+        return;
+      }
+      if (!userId) {
+        res.status(400).send({
+          message: "User ID can not be empty!"
+        });
+        return;
+      }
+      const result = await collections.delete(parseInt(collectionId), parseInt(userId));
       console.log(result);
       res.status(200).json({ message: 'Collection deleted successfully' });
     } catch (error) {
       res.status(500).json({ error: 'Failed to delete collection' });
     }
   });
- 
+
   app.use("/api/collections", router);
 
 }
