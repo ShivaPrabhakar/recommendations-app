@@ -9,22 +9,35 @@ exports.create = (collection) => {
     return Collections.create(collection)
 };
 
+exports.get = async (id, userId) => {
+  const collection = await Collections.findAll({
+    where: {
+      id: id,
+      user_id: userId
+    }
+  });
+  console.log(collection);
+  cache.setCacheData(id, userId, collection);
+  if (!collection || collection.length === 0) {
+    throw 'Collection not found';
+  }
+}
+
 exports.addRecommendation = async (collectionId, recommendationId, userId) => {
   try {
+    let cacheCollection;
     try {
-      const cacheCollection =  await cache.getCacheData(collectionId, userId,)
+      cacheCollection =  await cache.getCacheData(collectionId, userId);
     } catch (err) {
       console.error(err);
-        const collection = await Collections.findAll({
-          where: {
-            id: collectionId,
-            user_id: userId
-          }
-        });
-        cache.setCacheData(collectionId, userId, collection);
-        if (!collection) {
-          throw 'Collection not found';
-        }
+      try {
+        const collection = await this.get(collectionId, userId);
+      } catch (e) {
+        throw e;
+      }
+    }
+    if(!cacheCollection){
+      await this.get(collectionId, userId);
     }
     return collection_recommendations.create(collectionId, recommendationId);
   } catch (error) {
@@ -34,20 +47,19 @@ exports.addRecommendation = async (collectionId, recommendationId, userId) => {
 }
 exports.removeRecommendation = async (collectionId, recommendationId, userId) => {
   try {
+    let cacheCollection;
     try {
-      const cacheCollection =  await cache.getCacheData(collectionId, userId,)
+      cacheCollection =  await cache.getCacheData(collectionId, userId);
     } catch (err) {
       console.error(err);
-        const collection = await Collections.findAll({
-          where: {
-            id: collectionId,
-            user_id: userId
-          }
-        });
-        cache.setCacheData(collectionId, userId, collection);
-        if (!collection) {
-          throw 'Collection not found';
-        }
+      try {
+        const collection = await this.get(collectionId, userId);
+      } catch (e) {
+        throw e;
+      }
+    }
+    if(!cacheCollection){
+      await this.get(collectionId, userId);
     }
     return collection_recommendations.remove(collectionId, recommendationId);
   } catch (error) {
@@ -58,20 +70,19 @@ exports.removeRecommendation = async (collectionId, recommendationId, userId) =>
 
 exports.getRecommendations = async (collectionId, page, limit, userId) => {
   try {
+    let cacheCollection;
     try {
-      const cacheCollection =  await cache.getCacheData(collectionId, userId,)
+      cacheCollection =  await cache.getCacheData(collectionId, userId);
     } catch (err) {
       console.error(err);
-        const collection = await Collections.findAll({
-          where: {
-            id: collectionId,
-            user_id: userId
-          }
-        });
-        cache.setCacheData(collectionId, userId, collection);
-        if (!collection) {
-          throw 'Collection not found';
-        }
+      try {
+        const collection = await this.get(collectionId, userId);
+      } catch (e) {
+        throw e;
+      }
+    }
+    if(!cacheCollection){
+      await this.get(collectionId, userId);
     }
     return collection_recommendations.getRecommendations(collectionId, page, limit);
   } catch (error) {
