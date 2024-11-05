@@ -1,33 +1,30 @@
 const db = require("../models");
 const Collections = db.collections;
 const collection_recommendations = require("./collection_recommendations");
+const cache = require("./cache");
 const Op = db.Sequelize.Op;
 
-exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
-  
-    Collections.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Collections."
-        });
-      });
-};
 
 exports.create = (collection) => {
     return Collections.create(collection)
 };
 
-exports.addRecommendation = async (collectionId, recommendationId) => {
+exports.addRecommendation = async (collectionId, recommendationId, userId) => {
   try {
-    const collection = await Collections.findByPk(collectionId);
-    if (!collection) {
-      throw 'Collection not found';
+    try {
+      const cacheCollection =  await cache.getCacheData(collectionId, userId,)
+    } catch (err) {
+      console.error(err);
+        const collection = await Collections.findAll({
+          where: {
+            id: collectionId,
+            user_id: userId
+          }
+        });
+        cache.setCacheData(collectionId, userId, collection);
+        if (!collection) {
+          throw 'Collection not found';
+        }
     }
     return collection_recommendations.create(collectionId, recommendationId);
   } catch (error) {
@@ -35,11 +32,22 @@ exports.addRecommendation = async (collectionId, recommendationId) => {
     throw error;
   }
 }
-exports.removeRecommendation = async (collectionId, recommendationId) => {
+exports.removeRecommendation = async (collectionId, recommendationId, userId) => {
   try {
-    const collection = await Collections.findByPk(collectionId);
-    if (!collection) {
-      throw 'Collection not found';
+    try {
+      const cacheCollection =  await cache.getCacheData(collectionId, userId,)
+    } catch (err) {
+      console.error(err);
+        const collection = await Collections.findAll({
+          where: {
+            id: collectionId,
+            user_id: userId
+          }
+        });
+        cache.setCacheData(collectionId, userId, collection);
+        if (!collection) {
+          throw 'Collection not found';
+        }
     }
     return collection_recommendations.remove(collectionId, recommendationId);
   } catch (error) {
@@ -48,11 +56,22 @@ exports.removeRecommendation = async (collectionId, recommendationId) => {
   }
 }
 
-exports.getRecommendations = async (collectionId, page, limit) => {
+exports.getRecommendations = async (collectionId, page, limit, userId) => {
   try {
-    const collection = await Collections.findByPk(collectionId);
-    if (!collection) {
-      throw 'Collection not found';
+    try {
+      const cacheCollection =  await cache.getCacheData(collectionId, userId,)
+    } catch (err) {
+      console.error(err);
+        const collection = await Collections.findAll({
+          where: {
+            id: collectionId,
+            user_id: userId
+          }
+        });
+        cache.setCacheData(collectionId, userId, collection);
+        if (!collection) {
+          throw 'Collection not found';
+        }
     }
     return collection_recommendations.getRecommendations(collectionId, page, limit);
   } catch (error) {
@@ -61,9 +80,9 @@ exports.getRecommendations = async (collectionId, page, limit) => {
   }
 }
 
-exports.delete = (id) => {
+exports.delete = (id, userId) => {
     return Collections.destroy({
-        where: { id: id }
+        where: { id: id, user_id: userId }
     });
 }
   
