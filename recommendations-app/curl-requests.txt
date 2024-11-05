@@ -1,0 +1,92 @@
+Create Collection
+
+curl --location 'http://localhost:3030/api/collection/create' \
+--header 'accept: application/json, text/plain, */*' \
+--header 'accept-language: en-US,en;q=0.9' \
+--header 'content-type: application/json' \
+--header 'priority: u=1, i' \
+--header 'sec-ch-ua: "Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "macOS"' \
+--header 'sec-fetch-dest: empty' \
+--header 'sec-fetch-mode: cors' \
+--header 'sec-fetch-site: same-origin' \
+--header 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0' \
+--data '{
+    "name": "some",
+    "description": "some",
+    "user_id": 1
+}'
+
+
+
+Add Recommendation to Collection
+
+curl --location 'http://localhost:3030/api/collections/2/add' \
+--header 'accept: application/json, text/plain, */*' \
+--header 'accept-language: en-US,en;q=0.9' \
+--header 'content-type: application/json' \
+--header 'priority: u=1, i' \
+--header 'sec-ch-ua: "Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "macOS"' \
+--header 'sec-fetch-dest: empty' \
+--header 'sec-fetch-mode: cors' \
+--header 'sec-fetch-site: same-origin' \
+--header 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0' \
+--data '{
+    "recommendationId": 1,
+    "userId": 1
+}'
+
+
+
+Remove Recommendation from Collection
+
+curl --location --request DELETE 'http://localhost:3030/api/collections/2/1/remove/1' \
+--header 'accept: application/json, text/plain, */*' \
+--header 'accept-language: en-US,en;q=0.9' \
+--header 'content-type: application/json' \
+--header 'priority: u=1, i' \
+--header 'sec-ch-ua: "Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "macOS"' \
+--header 'sec-fetch-dest: empty' \
+--header 'sec-fetch-mode: cors' \
+--header 'sec-fetch-site: same-origin' \
+--header 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0' \
+
+
+
+
+View Recommendations of a Collection
+
+curl --location --request GET 'http://localhost:3030/api/collections/2/recommendations?limit=5&page=1&userId=12' \
+--header 'accept: application/json, text/plain, */*' \
+--header 'accept-language: en-US,en;q=0.9' \
+--header 'content-type: application/json' \
+--header 'priority: u=1, i' \
+--header 'sec-ch-ua: "Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "macOS"' \
+--header 'sec-fetch-dest: empty' \
+--header 'sec-fetch-mode: cors' \
+--header 'sec-fetch-site: same-origin' \
+--header 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0' \
+
+
+
+Delete Collection
+
+curl --location --request DELETE 'http://localhost:3030/api/collections/2/1' \
+--header 'accept: application/json, text/plain, */*' \
+--header 'accept-language: en-US,en;q=0.9' \
+--header 'content-type: application/json' \
+--header 'priority: u=1, i' \
+--header 'sec-ch-ua: "Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"' \
+--header 'sec-ch-ua-mobile: ?0' \
+--header 'sec-ch-ua-platform: "macOS"' \
+--header 'sec-fetch-dest: empty' \
+--header 'sec-fetch-mode: cors' \
+--header 'sec-fetch-site: same-origin' \
+--header 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0' \
